@@ -20,14 +20,14 @@ public class SugarOrderService implements IOrderService {
 
     @Override
     public void createOrder(Order order) {
-        logger.debug("creating order: " + order);
+        logger.debug("created order: " + order);
         orderEventProducer.publish(new OrderEvent(order.getOrderId(), com.sacombank.sugar.demo.order.domain.OrderStatus.CREATED));
         
     }
 
     @Override
     public void deleteOrder(String orderId) {
-       logger.debug("deleting order: " + orderId);
+       logger.debug("destroyed order: " + orderId);
        orderEventProducer.publish(new OrderEvent(orderId, com.sacombank.sugar.demo.order.domain.OrderStatus.CANCELED));
 
     }
