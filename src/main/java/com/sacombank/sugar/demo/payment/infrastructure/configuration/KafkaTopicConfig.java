@@ -1,4 +1,4 @@
-package com.sacombank.sugar.demo.order.infrastructure.configuration;
+package com.sacombank.sugar.demo.payment.infrastructure.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,12 +14,12 @@ public class KafkaTopicConfig {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    @Value(value = "${order.topic.create}")
-    private String createOrderTopic;
+    @Value(value = "${payment.topic.pay}")
+    private String createPaymentTopic;
 
 
-    @Value(value = "${order.topic.destroy}")
-    private String destroyOrderTopic;
+    @Value(value = "${payment.topic.reverse}")
+    private String reversePaymentTopic;
     
     @Value(value = "${kafka.jaas.config}")
     private String jaasConfig;
@@ -35,12 +35,12 @@ public class KafkaTopicConfig {
     }
 
     @Bean
-    public NewTopic topicCreateOrder() {
-        return new NewTopic(createOrderTopic, 1, (short) 1);
+    public NewTopic topicCreatePayment() {
+        return new NewTopic(createPaymentTopic, 1, (short) 1);
     }
 
     @Bean
-    public NewTopic topicDestroyOrder() {
-        return new NewTopic(destroyOrderTopic, 1, (short) 1);
+    public NewTopic topicReversePaymeNewTopic() {
+        return new NewTopic(reversePaymentTopic, 1, (short) 1);
     }
 }

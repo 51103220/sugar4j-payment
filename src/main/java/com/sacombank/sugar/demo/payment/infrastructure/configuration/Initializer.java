@@ -1,4 +1,4 @@
-package com.sacombank.sugar.demo.order.infrastructure.configuration;
+package com.sacombank.sugar.demo.payment.infrastructure.configuration;
 
 import javax.annotation.PreDestroy;
 

@@ -1,9 +1,9 @@
-package com.sacombank.sugar.demo.order.infrastructure.broker.kafka;
+package com.sacombank.sugar.demo.payment.infrastructure.broker.kafka;
 
 
 
-import com.sacombank.sugar.demo.order.domain.OrderEvent;
-import com.sacombank.sugar.demo.order.domain.producer.IOrderEventProducer;
+import com.sacombank.sugar.demo.payment.domain.OrderEvent;
+import com.sacombank.sugar.demo.payment.domain.producer.IOrderEventProducer;
 
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
-package com.sacombank.sugar.demo.order.infrastructure.configuration;
+package com.sacombank.sugar.demo.payment.infrastructure.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sacombank.sugar.demo.order.domain.Order;
+import com.sacombank.sugar.demo.payment.domain.Payment;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,6 +14,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @EnableKafka
@@ -45,20 +46,26 @@ public class KafkaConsumerConfig {
     }
 
 
-    public ConsumerFactory<String, Order> orderConsumerFactory() {
+    public ConsumerFactory<String, Payment> paymentConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order-mcs");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "payment-mcs");
         props.put("sasl.mechanism", "PLAIN");
         props.put("sasl.jaas.config", jaasConfig);
         props.put("security.protocol", "SASL_SSL");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Order.class));
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+        props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, JsonDeserializer.class);
+        props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        props.put(JsonDeserializer.KEY_DEFAULT_TYPE, StringDeserializer.class);
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Payment.class);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Payment.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Order> orderKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderConsumerFactory()); 
+    public ConcurrentKafkaListenerContainerFactory<String, Payment> paymentKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Payment> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(paymentConsumerFactory()); 
         return factory;
     }
 }

@@ -1,4 +1,4 @@
-package com.sacombank.sugar.demo.order.domain;
+package com.sacombank.sugar.demo.payment.domain;
 
 public class OrderEvent {
     private String eventId;

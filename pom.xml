@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sacombank.sugar.demo</groupId>
-	<artifactId>order</artifactId>
+	<artifactId>payment</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>order</name>
+	<name>payment</name>
 	<description>Spring Boot microservice template</description>
 	<properties>
 		<java.version>8</java.version>
