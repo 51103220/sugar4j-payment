@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-mcs
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: payment-mcs    
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-mcs
+  labels:
+    app: payment-mcs
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-mcs
+  template:
+    metadata:
+      labels:
+        app: payment-mcs
+    spec:
+      containers:
+        - name: payment-mcs
+          image: payment-mcs:latest
+          imagePullPolicy: IfNotPresent
