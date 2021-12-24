@@ -8,6 +8,7 @@ import com.sacombank.sugar.demo.payment.domain.repository.IPaymentRepository;
 import org.apache.logging.log4j.LogManager;
 
 import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Metrics;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.extension.annotations.WithSpan;
 
@@ -35,11 +36,14 @@ public class PaymentService implements IPaymentService {
         }
         else {
             logger.debug("order orderId={} payment failed", order.getOrderId());
+            
+            Metrics.counter("payment.failed.total", "type", "payment").increment();
+
             orderEventProducer.publish(new OrderEvent(order.getOrderId(), com.sacombank.sugar.demo.payment.domain.OrderStatus.FAILED_PAYMENT));
         }
         
     }
-    
+
     @Timed(value = "payment.reverse.time", description = "Time taken to execute order payment reverse")
     @WithSpan
     @Override
