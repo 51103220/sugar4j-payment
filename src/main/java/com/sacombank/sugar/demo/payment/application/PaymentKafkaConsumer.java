@@ -17,7 +17,12 @@ public class PaymentKafkaConsumer {
     }
 
     @KafkaListener(topics = "${payment.topic.pay}", containerFactory = "paymentKafkaListenerContainerFactory")
-    public void createOrderListener(Payment payment) {
+    public void createOrderListener(Payment payment) throws Exception {
+        if (Math.random() < 0.8){
+            logger.error("order orderId={} error msg=UnableToProcessPayment", payment.getOrderId());
+            throw new Exception("Payment Error");
+        }
+
         logger.debug("order orderId={} received payment request", payment.getOrderId());
         paymentService.pay(payment);
     }
