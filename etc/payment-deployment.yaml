@@ -20,7 +20,7 @@ metadata:
     app: payment-mcs
     version: v1
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: payment-mcs
@@ -28,8 +28,19 @@ spec:
     metadata:
       labels:
         app: payment-mcs
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+        prometheus.io/path: '/actuator/prometheus'  
     spec:
       containers:
         - name: payment-mcs
           image: payment-mcs:latest
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "300Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
